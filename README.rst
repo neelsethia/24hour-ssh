@@ -73,9 +73,9 @@ Release 1
 actions limited to ashley-training, ucpathops-poc
 
 - user granted IAM permissions to create cloud9 instances
-- user creates thier own cloud9 instance in target vpc/sg
+- user creates their own cloud9 instance in target vpc/sg
 - user installs 24hour-ssh tool onto cloud9 with pip
-- user run script from cloud9 instance
+- user runs script from cloud9 instance
 - script prompts for target host
 - script generates temporary ssh keypair
 - script calls ssm service to install generated ssh public key into ~ec2-user/.ssh/authorizedkeys file
