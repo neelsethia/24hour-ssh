@@ -56,13 +56,16 @@ def test_delete_instance():
 
 if __name__ == '__main__':
     #make_instance()
-    test_new_instance()
-    test_delete_instance()
-    #list_instances()
+
+    list_instances()
     #print('=============')
     #terminate_instances()
     #print('=============')
     #list_instances()
+    
+    
+    #test_new_instance()
+    #test_delete_instance()
     
     
 

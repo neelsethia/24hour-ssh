@@ -63,7 +63,6 @@ Questions about Requirements
 
 
 
-
 Release Plan
 ------------
 
@@ -92,22 +91,21 @@ actions limited to ashley-training, ucpathops-poc
 - script logs activity to cloudwatch
 - script posts sns notice to specified email addresses
 - script launches lambda task to recycle target instance in 24 hours
+- script prompts for alternative ssh public key
+- script uploads alternative ssh public key into cloud9 
+- log ssh key fingerprint
 
 Release 3
 ---------
 
 - audit reporting
 
+Technical Questions
+-------------------
 
-
-
-
-
-
-
-
-
-
+- how to manage authorized key entries?
+- list of target hosts? 
+- how does SSM work? 
 
 Tasks for Neel:
 ---------------
@@ -115,5 +113,11 @@ Tasks for Neel:
 - continue with ec2
 - setup pytest,moto tests for ec2 functions
 - setup travis-ci autobuild to run tests
+- Python script '24hour-ssh.py' 
 
 
+Tasks for Ashley:
+-----------------
+
+- user granted IAM permissions 
+- README documentation for users
