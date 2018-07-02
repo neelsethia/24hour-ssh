@@ -110,10 +110,11 @@ Technical Questions
 Tasks for Neel:
 ---------------
 
-- continue with ec2
-- setup pytest,moto tests for ec2 functions
+- cfn template to build one s3 bucket, one ec2 instance.
+- setup pytest,moto tests for ec2 functions - tests must pass
 - setup travis-ci autobuild to run tests
-- Python script '24hour-ssh.py' 
+- Python script '24hour-ssh.py' with tests
+
 
 
 Tasks for Ashley:
@@ -121,3 +122,4 @@ Tasks for Ashley:
 
 - user granted IAM permissions 
 - README documentation for users
+- study Amazon Service Manager (SSM)
