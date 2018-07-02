@@ -1,0 +1,46 @@
+# cfn-flip cf_create_s3.yaml > cf_create_s3.json 
+# sudo /opt/aws/bin/cfn-init -c ascending cf_create_s3.json
+# ^^^^^^ DONT USE THIS ITS CHEATING ^^^^^^^^^^^^^
+
+#
+
+
+AWSTemplateFormatVersion: "2010-09-09" #need to figure out what template format version is? 
+Description: Template that creates an S3 bucket 
+Resources:
+    S3Bucket:
+        Type: 'AWS::S3::BUCKET'
+        Properties: 
+            BucketName: testing_create_s3
+            AccessControl: PublicRead
+        DeletionPolicy: Retain
+    
+    BucketPolicy:
+        Type: 'AWS::S3::BucketPolicy'
+        Properties:
+            PolicyDocument:
+                Id: MyPolicy
+                Version: 2018-07-02
+                Statement:
+                    - Sid: PublicReadForGetBucketObjects
+                      Effect: Allow
+                      Principal: '*'
+                      Action: 's3.GetObject'
+                      Resource: !Join
+                        - ''
+                        - - 'arn:aws:s3:::'
+                        - !Ref S3Bucket
+                        - /*
+            Bucket: !Ref S3Bucket
+AWS::CloudFormation::Init: 
+                configSets:
+                    ascending:
+                        - "config1"
+                config1:
+                    commands:
+                        test:
+                            command: "echo \"$CFNTEST\" > test.txt"
+                            env:
+                                CFNTEST: "Config1 test output :)"
+                            cwd: "~"
+
