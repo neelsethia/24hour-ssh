@@ -113,6 +113,9 @@ Tasks for Neel:
 - cfn template to build one s3 bucket, one ec2 instance.
 - setup pytest,moto tests for ec2 functions - tests must pass
 - setup travis-ci autobuild to run tests
+- make cfn template to build 3 ec2 instances with tags: {key = 24hourssh, value = enabled}
+  these must be in the same ec2 security group as your cloud9 instance
+- play with SSM from console. figure out about runCommand
 - Python script '24hour-ssh.py' with tests
 
 
