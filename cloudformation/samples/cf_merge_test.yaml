@@ -1,0 +1,26 @@
+
+#This will have resources from both EC2 and S3 and I will first create the stack
+#   then update the stack. 
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'This will have an EC2 instance and then a S3 bucket for testing (check)'
+Parameters: 
+    InstanceTypeParameter:
+        Type: String
+        Default: t1.micro
+        Description: Parameter set as t1.micro by default 
+Resources:
+    TestEc2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            InstanceType: 
+                Ref: InstanceTypeParameter
+            ImageId: ami-4e700e36
+    TestS3Bucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            AccessControl: PublicRead
+            BucketName: PublicBucket 
+        DeletionPolicy: Retain
+
+            
