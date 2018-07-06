@@ -126,3 +126,4 @@ Tasks for Ashley:
 - user granted IAM permissions 
 - README documentation for users
 - study Amazon Service Manager (SSM)
+- create basic usage tests for ssm

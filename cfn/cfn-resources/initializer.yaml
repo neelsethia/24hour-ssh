@@ -1,0 +1,2 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Initilizer cfn template for the 24hour-ssh project.'  

@@ -24,9 +24,10 @@ def targetPrompt:
     global targetHost
     targetHost = input("What is the desired target host?")
     
-    #test whether target host is valid 
+    #test whether target host is valid
     
-    ec2 = boto3.resource('ec2') #not sure whether this will be needed 
+    
+    ec2 = boto3.resource('ec2')
     
     #then do what
     
@@ -38,10 +39,16 @@ def generateKey:
     #with open("/tmp/private.key", 'w') as content_file:
     #    chmod("/temp/private.key", 0600)
      #   content_file.write(key.exportKey('PEM'))
+    global pubkey
     pubkey = key.publickey()
     with open("/tmp/public.key",'w') as content_file:
         content_file.write(public.exportKey('OpenSSH'))
-        
+
+
+def transferKey: 
+    #use SSM to transfer public key to target instance 
+    
+
 def logUserInput:
         
         
