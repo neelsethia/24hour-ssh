@@ -1,5 +1,0 @@
-[
-  "test_s3.py::test_generate_random_s3_bucketname", 
-  "test_s3.py::test_new_bucket", 
-  "test_s3.py::test_delete_bucket"
-]
