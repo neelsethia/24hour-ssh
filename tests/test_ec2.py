@@ -18,6 +18,7 @@ def make_instance():
         )
     global tempID
     tempID = instance[0].id 
+    return instance[0].id
 
 def list_instances():
     for instance in ec2.instances.all():
