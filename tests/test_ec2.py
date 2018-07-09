@@ -1,5 +1,6 @@
 #!/bin/env python 
 import sys 
+import os
 import boto3 
 import botocore
 from botocore.exceptions import ClientError
