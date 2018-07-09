@@ -47,27 +47,38 @@ def test_new_instance():
 #tests whether an instance is terminated after calling terminate_instances
 @mock_ec2
 def test_delete_instance():
-   tempec2 = boto3.resource('ec2')
-   make_instance()
-   terminate_instances(tempID)
-   for instance1 in tempec2.instances.all(): 
-        if tempID is instance1.id:
-            print ('reached')
-            assert instance.state == 'terminated' or 'shutting-down'
-
+   #tempec2 = boto3.resource('ec2')
+   
+   print("==============")
+   #because data is not persistent between moto tests, reimplement test_new_instance
+   checkID = make_instance()
+   #hopefully made?
+   
+   list_instances()
+   print("==============")
+   print ("checking to see if checkID exists " + checkID)
+  
+   terminate_instances(checkID)
+   
+   for instance1 in ec2.instances.all(): 
+        if checkID == instance1.id:
+            stateChecker = str(instance1.state)
+            print('instance state: ' + stateChecker)
+            assert stateChecker == "{\'Code\': 48,\'Name\': \'terminated\'}" or stateChecker == "{\'Name\': \'terminated\', \'Code\': 48}"
+                
 if __name__ == '__main__':
     #make_instance()
 
-    list_instances()
+    #list_instances()
     #print('=============')
     #terminate_instances()
     #print('=============')
-    #list_instances()
-    
+
     
     #test_new_instance()
-    #test_delete_instance()
-    
+    test_delete_instance()
+    #print('=============')
+    #list_instances()
     
 
 
