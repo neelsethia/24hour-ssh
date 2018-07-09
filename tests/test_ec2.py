@@ -64,7 +64,7 @@ def test_delete_instance():
         if checkID == instance1.id:
             stateChecker = str(instance1.state)
             print('instance state: ' + stateChecker)
-            assert stateChecker == "{\'Code\': 48,\'Name\': \'terminated\'}" or stateChecker == "{\'Name\': \'terminated\', \'Code\': 48}"
+            assert stateChecker == "{\'Code\': 48, \'Name\': \'terminated\'}" or stateChecker == "{\'Name\': \'terminated\', \'Code\': 48}"
                 
 if __name__ == '__main__':
     #make_instance()
