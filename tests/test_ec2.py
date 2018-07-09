@@ -7,6 +7,9 @@ import string
 import moto 
 from moto import mock_ec2
 
+os.environ['AWS_PROFILE'] = "default"
+os.environ['AWS_DEFAULT_REGION'] = "us-west-2"
+
 ec2 = boto3.resource('ec2', 'us-west-2')
 
 def make_instance():
