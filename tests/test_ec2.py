@@ -56,7 +56,7 @@ def test_delete_instance():
    
    list_instances()
    print("==============")
-   print ("checking to see if checkID exists " + checkID)
+   print ("checking to see if checkID exists: " + checkID)
   
    terminate_instances(checkID)
    
