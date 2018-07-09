@@ -7,7 +7,7 @@ import string
 import moto 
 from moto import mock_ec2
 
-ec2 = boto3.resource('ec2')
+ec2 = boto3.resource('ec2', 'us-west-2')
 
 def make_instance():
     instance = ec2.create_instances(
