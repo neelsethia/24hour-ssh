@@ -9,7 +9,7 @@ import moto
 from moto import mock_ec2
 
 #working from ec2 user
-ec2 = boto3.resource('ec2', 'us-west-2')
+ec2 = boto3.resource('ec2', 'us-west-2', aws_access_key_id="", aws_secret_access_key="")
 
 def make_instance():
     instance = ec2.create_instances(
