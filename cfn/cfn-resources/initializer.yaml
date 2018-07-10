@@ -3,7 +3,7 @@
 #   group as cloud9 instance.
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Initilizer cfn template for the 24hour-ssh project.'  
+Description: 'Using these instances for testing SSM between them.'  
 Parameters:
     InstanceTypeParameter:
         Type: String
@@ -19,6 +19,7 @@ Resources:
             Tags:
                 - Key: 24hourssh
                 - Value: enabled
+            #aws ec2 describe-security-groups --group-names 
             
     EC2Instance2:
         Type: AWS::EC2::Instance
