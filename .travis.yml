@@ -6,5 +6,4 @@ install:
     - pip install moto
     - pip install awscli
 script:
-    - pytest 
-    
+    - pytest   
