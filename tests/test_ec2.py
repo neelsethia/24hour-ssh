@@ -64,6 +64,7 @@ def test_delete_instance():
    
    for instance1 in ec2.instances.all(): 
         if checkID == instance1.id:
+            #wired together weirdly but it works kind of 
             stateChecker = str(instance1.state)
             print('instance state: ' + stateChecker)
             assert stateChecker == "{\'Code\': 48, \'Name\': \'terminated\'}" or stateChecker == "{\'Name\': \'terminated\', \'Code\': 48}"
