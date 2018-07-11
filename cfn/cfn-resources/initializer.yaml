@@ -18,15 +18,28 @@ Resources:
             ImageId: ami-4e700e36
             Tags:
                 - Key: 24hourssh
-                - Value: enabled
-            #aws ec2 describe-security-groups --group-names 
+                  Value: enabled
+            #aws ec2 describe-security-groups --group-names
             
     EC2Instance2:
         Type: AWS::EC2::Instance
         Properties:
+            InstanceType:
+                Ref: InstanceTypeParameter
+            ImageId: ami-4e700e36
+            Tags:
+                - Key: 24hourssh
+                  Value: enabled
         
     EC2Instance3:
         Type: AWS::EC2::Instance
         Properties: 
-        
+            InstanceType:
+                Ref: InstanceTypeParameter
+            ImageId: ami-4e700e36
+            Tags:
+                - Key: 24hourssh
+                  Value: enabled
+
+
         
