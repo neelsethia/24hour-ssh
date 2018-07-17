@@ -7,7 +7,7 @@ import string
 import moto 
 from moto import mock_ec2
 
-ec2 = boto3.resource('ec2')
+ec2 = boto3.resource('ec2',region_name='us-west-2' )
 
 def make_instance():
     instance = ec2.create_instances(
@@ -47,7 +47,7 @@ def test_new_instance():
 #tests whether an instance is terminated after calling terminate_instances
 @mock_ec2
 def test_delete_instance():
-   tempec2 = boto3.resource('ec2')
+   tempec2 = boto3.resource('ec2', region_name='us-west-2')
    make_instance()
    terminate_instances(tempID)
    for instance1 in tempec2.instances.all(): 
