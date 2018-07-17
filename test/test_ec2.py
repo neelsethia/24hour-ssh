@@ -8,12 +8,8 @@ import string
 import moto 
 from moto import mock_ec2
 
-<<<<<<< HEAD:tests/test_ec2.py
 #working from ec2 user
 ec2 = boto3.resource('ec2', 'us-west-2', aws_access_key_id="", aws_secret_access_key="")
-=======
-ec2 = boto3.resource('ec2',region_name='us-west-2' )
->>>>>>> origin/ashley:test/test_ec2.py
 
 def make_instance():
     instance = ec2.create_instances(
@@ -53,21 +49,11 @@ def test_new_instance():
 #tests whether an instance is terminated after calling terminate_instances
 @mock_ec2
 def test_delete_instance():
-<<<<<<< HEAD:tests/test_ec2.py
    #tempec2 = boto3.resource('ec2')
    
    print("==============")
    #because data is not persistent between moto tests, reimplement test_new_instance
    checkID = make_instance()
-=======
-   tempec2 = boto3.resource('ec2', region_name='us-west-2')
-   make_instance()
-   terminate_instances(tempID)
-   for instance1 in tempec2.instances.all(): 
-        if tempID is instance1.id:
-            print ('reached')
-            assert instance.state == 'terminated' or 'shutting-down'
->>>>>>> origin/ashley:test/test_ec2.py
 
    list_instances()
    print("==============")
