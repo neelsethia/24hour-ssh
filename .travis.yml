@@ -1,13 +1,9 @@
 language: python 
 python:
     - "3.5"
-<<<<<<< HEAD
-install:
-=======
     - "3.6"
 install:
     - pip install .
->>>>>>> origin/ashley
     - pip install boto3
     - pip install moto
     - pip install awscli
