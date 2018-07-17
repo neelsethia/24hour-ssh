@@ -54,8 +54,7 @@ def test_delete_instance():
    print("==============")
    #because data is not persistent between moto tests, reimplement test_new_instance
    checkID = make_instance()
-   #hopefully made?
-   
+
    list_instances()
    print("==============")
    print ("checking to see if checkID exists: " + checkID)
