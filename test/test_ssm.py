@@ -3,7 +3,7 @@ import moto
 from moto import mock_ec2, mock_ssm
 import test_ec2
 
-from ec2ssh import ssm
+from ec2ssh.sample import ssm
 
 
 param_name = 'passwd'
@@ -35,7 +35,7 @@ def test_ssm_list_param():
     ssm.ssm_set_list_param(param_name, param_value_list)
     response = ssm.ssm_get_param(param_name)
     print(response['Parameter']['Value'])
-    assert response['Parameter']['Value'] == param_value_list.split(',')
+    assert response['Parameter']['Value'] == (',').join(param_value_list)
 
 
 

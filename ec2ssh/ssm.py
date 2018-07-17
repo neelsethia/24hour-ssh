@@ -1,23 +1,16 @@
+import os
 import boto3 
+import yaml
+import json
+
+DEFAULT_PUBKEY='~/.ssh/id_rsa.pub'
+
+def read_public_key_from_file(pubkey_file):
+    with open(pubkey_file, 'r') as pubkey:
+        return pubkey.read()
 
 
-def ssm_list_instance_tags(instance_id):
-    ssm = boto3.client('ssm')
-    response = ssm.list_tags_for_resource(
-        ResourceType='ManagedInstance',
-        ResourceId=instance_id,
-    )
-    return response['TagList']
-
-def ssm_add_instance_tags(instance_id, tags):
-    ssm = boto3.client('ssm')
-    ssm.add_tags_to_resource(
-        ResourceType='ManagedInstance',
-        ResourceId=instance_id,
-        Tags=tags,
-    )
-
-def ssm_send_command(instance_id, command_doc_name):
+def send_command(instance_id, command_doc_name):
     ssm = boto3.client('ssm')
     response = ssm.send_command(
         InstanceIds=[instance_id],
@@ -27,7 +20,7 @@ def ssm_send_command(instance_id, command_doc_name):
     )
     return response
 
-def ssm_set_encrypted_param(param_name, param_value, key_id=None):
+def set_encrypted_param(param_name, param_value, key_id=None):
     ssm = boto3.client('ssm')
     kwargs = dict(
         Name=param_name,
@@ -37,32 +30,47 @@ def ssm_set_encrypted_param(param_name, param_value, key_id=None):
     )
     if key_id:
         kwargs['KeyId'] = key_id
-    response = ssm.put_parameter(**kwargs)
-    return response['Version']
+    return ssm.put_parameter(**kwargs)
 
-def ssm_get_encrypted_param(param_name):
+def get_encrypted_param(param_name):
     ssm = boto3.client('ssm')
-    response = ssm.get_parameter(
+    return ssm.get_parameter(
         Name=param_name,
         WithDecryption=True,
     )
-    return response
 
-def ssm_set_list_param(param_name, param_value_list):
-    ssm = boto3.client('ssm')
-    value = ','.join(param_value_list)
-    response = ssm.put_parameter(
-        Name=param_name,
-        Value=','.join(param_value_list),
-        Type='StringList',
-        Overwrite=True,
+def build_send_command_document(pubkey):
+    document = dict(
+        schemaVersion='2.2',
+        description='Install ssh public key into ~ec2-user/.ssh/authorized_keys',
+        parameters=dict(),
+        mainSteps=[
+            dict(
+                action='aws:runShellScript',
+                name='sshPubkeySetup',
+                inputs=dict(
+                    runCommandand=[
+                        'SSH_PUBKEY="{}"'.format(pubkey),
+                        'echo $SSH_PUBKEY >> ~ec2-user/.ssh/authorized_keys',
+                    ]
+                )
+            )
+        ]
     )
-    return response
+    return json.dumps(document)
 
-def ssm_get_param(param_name):
-    ssm = boto3.client('ssm')
-    response = ssm.get_parameter(
-        Name=param_name,
-    )
-    return response
 
+"""
+def upload_document(
+response = client.create_document(
+    Content='string',
+    Name='string',
+    DocumentType='Command'|'Policy'|'Automation',
+    DocumentFormat='YAML'|'JSON',
+    TargetType='string'
+)
+
+def main():
+    pubkey = read_public_key_from_file(DEFAULT_PUBKEY)
+    set_encrypted_param('ssh_pubkey', pubkey)
+"""
