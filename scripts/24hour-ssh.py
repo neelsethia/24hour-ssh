@@ -9,18 +9,16 @@ import subprocess
 import sys 
 import string 
 import os 
-import boto3 
+import boto3
+import botocore
+from botocore.exceptions import ClientError
+import moto 
 import datetime
 from os import chmod 
 from Crypto.PublicKey import RSA 
 
 
-
-
-def userPrompt:
-  
-
-def targetPrompt:
+def target_prompt():
     global targetHost
     targetHost = input("What is the desired target host?")
     
@@ -29,26 +27,52 @@ def targetPrompt:
     
     ec2 = boto3.resource('ec2')
     
-    #then do what
     
+    
+    #then do what
+ 
+#def list_all_resources():
+
+   
+#def pull_local_instance(): 
+    #this will be for determining the local c9 instance
+        #user is running
+
+def generate_key_paramiko():
     
         
-def generateKey: 
-    #this will generate ssh keypair 
+def generate_key_crypto(): 
+
+#this will generate ssh keypair 
+      
     key = RSA.generate(2048)
-    #with open("/tmp/private.key", 'w') as content_file:
-    #    chmod("/temp/private.key", 0600)
-     #   content_file.write(key.exportKey('PEM'))
-    global pubkey
+    cwd = os.getcwd()
+    with open(cwd + "/private.key", 'wb') as content_file: #temp, need to get current path for key storing
+        chmod(cwd + "/private.key", 600)
+        content_file.write(key.exportKey('PEM'))
     pubkey = key.publickey()
-    with open("/tmp/public.key",'w') as content_file:
-        content_file.write(public.exportKey('OpenSSH'))
+    with open(cwd + "/public.key", 'w') as content_file:
+        content_file.write(pubkey.exportKey('OpenSSH'))
+    
 
+def test_generated_crypto_key():
+    
+    #generating key and then testing to see whether we see the file in the cwd. 
+    generate_key_crypto()
+    
+    #public key check 
+    assert os.path.isfile("private.key")
+    assert os.path.isfile("public.key")
+    
 
-def transferKey: 
+#def transfer_key(): 
     #use SSM to transfer public key to target instance 
     
+    
 
-def logUserInput:
+#def log_user_input():
         
-        
+
+
+if __name__ == '__main__':
+    test_generated_key()

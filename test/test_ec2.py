@@ -1,5 +1,6 @@
 #!/bin/env python 
 import sys 
+import os
 import boto3 
 import botocore
 from botocore.exceptions import ClientError
@@ -7,7 +8,8 @@ import string
 import moto 
 from moto import mock_ec2
 
-#ec2 = boto3.resource('ec2',region_name='us-west-2' )
+#working from ec2 user
+ec2 = boto3.resource('ec2', 'us-west-2', aws_access_key_id="", aws_secret_access_key="")
 
 def make_instance():
     ec2= boto3.resource('ec2',region_name='us-west-2' )
@@ -48,27 +50,38 @@ def test_new_instance():
 #tests whether an instance is terminated after calling terminate_instances
 @mock_ec2
 def test_delete_instance():
-   tempID = make_instance()
-   terminate_instances(tempID)
-   tempec2 = boto3.resource('ec2', region_name='us-west-2')
-   for instance1 in tempec2.instances.all(): 
-        if tempID is instance1.id:
-            print ('reached')
-            assert instance.state == 'terminated' or 'shutting-down'
+   #tempec2 = boto3.resource('ec2')
+   
+   print("==============")
+   #because data is not persistent between moto tests, reimplement test_new_instance
+   checkID = make_instance()
 
+   list_instances()
+   print("==============")
+   print ("checking to see if checkID exists: " + checkID)
+  
+   terminate_instances(checkID)
+   
+   for instance1 in ec2.instances.all(): 
+        if checkID == instance1.id:
+            #wired together weirdly but it works kind of 
+            stateChecker = str(instance1.state)
+            print('instance state: ' + stateChecker)
+            assert stateChecker == "{\'Code\': 48, \'Name\': \'terminated\'}" or stateChecker == "{\'Name\': \'terminated\', \'Code\': 48}"
+                
 if __name__ == '__main__':
     #make_instance()
 
-    list_instances()
+    #list_instances()
     #print('=============')
     #terminate_instances()
     #print('=============')
-    #list_instances()
-    
+
     
     #test_new_instance()
-    #test_delete_instance()
-    
+    test_delete_instance()
+    #print('=============')
+    #list_instances()
     
 
 

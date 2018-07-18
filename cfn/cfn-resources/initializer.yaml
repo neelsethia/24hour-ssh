@@ -1,2 +1,45 @@
+
+# 3 Ec2 instances with tags: {key = 24hourssh, value = enabled}. Must be in the same Ec2 security
+#   group as cloud9 instance.
+
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Initilizer cfn template for the 24hour-ssh project.'  
+Description: 'Using these instances for testing SSM between them.'  
+Parameters:
+    InstanceTypeParameter:
+        Type: String
+        Default: t1.micro 
+        Description: Parameter set as t1.micro by default. 
+Resources:
+    EC2Instance1:
+        Type: AWS::EC2::Instance
+        Properties: 
+            InstanceType:
+                Ref: InstanceTypeParameter
+            ImageId: ami-4e700e36
+            Tags:
+                - Key: 24hourssh
+                  Value: enabled
+            #aws ec2 describe-security-groups --group-names
+            
+    EC2Instance2:
+        Type: AWS::EC2::Instance
+        Properties:
+            InstanceType:
+                Ref: InstanceTypeParameter
+            ImageId: ami-4e700e36
+            Tags:
+                - Key: 24hourssh
+                  Value: enabled
+        
+    EC2Instance3:
+        Type: AWS::EC2::Instance
+        Properties: 
+            InstanceType:
+                Ref: InstanceTypeParameter
+            ImageId: ami-4e700e36
+            Tags:
+                - Key: 24hourssh
+                  Value: enabled
+
+
+        
