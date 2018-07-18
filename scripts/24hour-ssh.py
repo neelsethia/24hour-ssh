@@ -16,6 +16,7 @@ import moto
 import datetime
 from os import chmod 
 from Crypto.PublicKey import RSA 
+import paramiko
 
 
 def target_prompt():
@@ -38,8 +39,14 @@ def target_prompt():
     #this will be for determining the local c9 instance
         #user is running
 
-def generate_key_paramiko():
+def generate_key_paramiko(filename, passwd):
+    cwd = os.getcwd()
+    key = paramiko.RSAKey.generate(1024)
+    key.write_private_key_file(filename,passwd)
+    chmod(filename, 600)
     
+    cwd = os.getcwd()
+    out = open(cwd +'/pkey.pub', 'w').write(key.get_base64())
         
 def generate_key_crypto(): 
 
@@ -47,7 +54,7 @@ def generate_key_crypto():
       
     key = RSA.generate(2048)
     cwd = os.getcwd()
-    with open(cwd + "/private.key", 'wb') as content_file: #temp, need to get current path for key storing
+    with open(cwd + "/private.key", 'wb') as content_file: 
         chmod(cwd + "/private.key", 600)
         content_file.write(key.exportKey('PEM'))
     pubkey = key.publickey()
@@ -64,7 +71,12 @@ def test_generated_crypto_key():
     assert os.path.isfile("private.key")
     assert os.path.isfile("public.key")
     
-
+def test_generated_para_key():
+    
+    generate_key_paramiko("private.key", "hello")
+    
+    assert os.path.isfile("private.key")
+    assert os.path.isfile("pkey.pub")
 #def transfer_key(): 
     #use SSM to transfer public key to target instance 
     
@@ -75,4 +87,4 @@ def test_generated_crypto_key():
 
 
 if __name__ == '__main__':
-    test_generated_key()
+    test_generated_para_key()
