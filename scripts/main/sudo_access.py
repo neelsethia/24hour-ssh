@@ -23,22 +23,10 @@ def target_prompt():
     global targetHost
     targetHost = input("What is the desired target host?")
     
-    #test whether target host is valid
-    
-    
+
     ec2 = boto3.resource('ec2')
-    
-    
-    
-    #then do what
- 
-#def list_all_resources():
 
-   
-#def pull_local_instance(): 
-    #this will be for determining the local c9 instance
-        #user is running
-
+#generating an SSH keypair
 def generate_key_paramiko(filename, passwd):
     cwd = os.getcwd()
     key = paramiko.RSAKey.generate(1024)
@@ -47,11 +35,9 @@ def generate_key_paramiko(filename, passwd):
     
     cwd = os.getcwd()
     out = open(cwd +'/pkey.pub', 'w').write(key.get_base64())
-        
-# def generate_key_crypto(): 
 
-# #this will generate ssh keypair 
-      
+#works but not what we need :(
+# def generate_key_crypto(): 
 #     key = RSA.generate(2048)
 #     cwd = os.getcwd()
 #     with open(cwd + "/private.key", 'wb') as content_file: 
@@ -68,7 +54,6 @@ def generate_key_paramiko(filename, passwd):
     
     
 
-#def log_user_input():
-        
+
 
 
