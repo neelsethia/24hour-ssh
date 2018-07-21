@@ -5,7 +5,7 @@ python:
 install:
     - pip install .
     - pip install boto3
-    - pip install moto
+    - pip install https://github.com/ashleygould/moto/archive/ashley.zip
     - pip install awscli
 script:
     - pytest   
