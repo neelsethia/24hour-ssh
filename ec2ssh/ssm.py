@@ -1,45 +1,18 @@
 import os
-import boto3 
-import yaml
+import boto3
 import json
 
-DEFAULT_PUBKEY='~/.ssh/id_rsa.pub'
 
 def read_public_key_from_file(pubkey_file):
     with open(pubkey_file, 'r') as pubkey:
         return pubkey.read()
 
 
-def send_command(instance_id, command_doc_name):
-    ssm = boto3.client('ssm')
-    response = ssm.send_command(
-        InstanceIds=[instance_id],
-        DocumentName=command_doc_name,
-        TimeoutSeconds= 3600,
-        Parameters=dict(),
-    )
-    return response
+def get_ssm_client():
+    return boto3.client('ssm', 'us-west-2', aws_access_key_id="", aws_secret_access_key="")
 
-def set_encrypted_param(param_name, param_value, key_id=None):
-    ssm = boto3.client('ssm')
-    kwargs = dict(
-        Name=param_name,
-        Value=param_value,
-        Type='SecureString',
-        Overwrite=True,
-    )
-    if key_id:
-        kwargs['KeyId'] = key_id
-    return ssm.put_parameter(**kwargs)
 
-def get_encrypted_param(param_name):
-    ssm = boto3.client('ssm')
-    return ssm.get_parameter(
-        Name=param_name,
-        WithDecryption=True,
-    )
-
-def build_send_command_document(pubkey):
+def build_document(pubkey):
     document = dict(
         schemaVersion='2.2',
         description='Install ssh public key into ~ec2-user/.ssh/authorized_keys',
@@ -60,17 +33,58 @@ def build_send_command_document(pubkey):
     return json.dumps(document)
 
 
-"""
-def upload_document(
-response = client.create_document(
-    Content='string',
-    Name='string',
-    DocumentType='Command'|'Policy'|'Automation',
-    DocumentFormat='YAML'|'JSON',
-    TargetType='string'
-)
+def upload_document(client, document_name, document):
+    try:
+        client.create_document(
+            Content=document,
+            Name='sshPubkeySetup',
+            DocumentType='Command',
+            DocumentFormat='JSON',
+            TargetType='/AWS::EC2::Instance'
+        )
+    except client.exceptions.DocumentAlreadyExists:
+        pass
+    return
+
+
+def send_command(client, instance_id):
+    response = client.send_command(
+        InstanceIds=[instance_id],
+        DocumentName='sshPubkeySetup',
+        TimeoutSeconds=3600,
+        Parameters=dict(),
+    )
+    return response
+
+
+def is_24hourssh_enabled(instance):
+    is_enabled = next((
+            True for tag in instance.tags
+            if tag['Key'] == '24hourssh'
+            and tag['Value'] == 'enabled'
+        ), False)
+    return is_enabled
+
+
+def get_24hourssh_enabled_instances():
+    ec2 = boto3.resource('ec2', region_name='us-west-2')
+    return [
+        instance for instance in ec2.instances.all()
+        if instance.state['Name'] == 'running'
+        and is_24hourssh_enabled(instance)
+    ]
+
 
 def main():
-    pubkey = read_public_key_from_file(DEFAULT_PUBKEY)
-    set_encrypted_param('ssh_pubkey', pubkey)
-"""
+    client = boto3.client('ssm', 'us-west-2')
+    pubkey_file = '~/.ssh/id_rsa.pub'
+    pubkey = read_public_key_from_file(os.path.expanduser(pubkey_file))
+    document = build_document(pubkey)
+    document_name = 'sshPubkeySetup'
+    upload_document(client, document_name, document)
+    for instance in get_24hourssh_enabled_instances():
+        print(instance.id)
+
+
+if __name__ == '__main__':
+    main()
