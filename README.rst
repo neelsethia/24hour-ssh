@@ -133,31 +133,31 @@ Tasks for Ashley:
 Project Layout
 --------------
 
-./.travis.yml
-./setup.py
-./test/__init.py
-./test/fixtures
-./test/fixtures/id_rsa.pub
-./test/test_ec2ssh.py
-./test/cli/test_sudo_access.py
-./test/cli/__init__.py
+- ./.travis.yml
+- ./setup.py
+- ./test/__init.py
+- ./test/fixtures
+- ./test/fixtures/id_rsa.pub
+- ./test/test_ec2ssh.py
+- ./test/cli/test_sudo_access.py
+- ./test/cli/__init__.py
 
-./ec2ssh/cli
-./ec2ssh/cli/
-./ec2ssh/cli/sudo_access.py
-./ec2ssh/cli/__init__.py
-./ec2ssh/ssm.py
-./ec2ssh/__init__.py
+- ./ec2ssh/cli
+- ./ec2ssh/cli/
+- ./ec2ssh/cli/sudo_access.py
+- ./ec2ssh/cli/__init__.py
+- ./ec2ssh/ssm.py
+- ./ec2ssh/__init__.py
 
 
-./samples/test_ssm.py
-./samples/test_s3.py
-./samples/test_ec2.py
-./samples/ssm.py
+- ./samples/test_ssm.py
+- ./samples/test_s3.py
+- ./samples/test_ec2.py
+- ./samples/ssm.py
 
-./cfn
-./cfn/cfn-resources
-./cfn/cfn-resources/initializer.yaml
+- ./cfn
+- ./cfn/cfn-resources
+- ./cfn/cfn-resources/initializer.yaml
 
 
 Installation
