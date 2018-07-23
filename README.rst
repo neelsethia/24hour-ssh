@@ -132,11 +132,11 @@ Tasks for Ashley:
 
 Project Layout
 --------------
-
-#tests
-
 - ./.travis.yml
 - ./setup.py
+
+#tests 
+
 - ./test/__init.py
 - ./test/fixtures
 - ./test/fixtures/id_rsa.pub
