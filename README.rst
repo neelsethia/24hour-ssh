@@ -127,3 +127,50 @@ Tasks for Ashley:
 - README documentation for users
 - study Amazon Service Manager (SSM)
 - create basic usage tests for ssm
+
+
+
+Project Layout
+--------------
+
+./.travis.yml
+./setup.py
+./test/__init.py
+./test/fixtures
+./test/fixtures/id_rsa.pub
+./test/test_ec2ssh.py
+./test/cli/test_sudo_access.py
+./test/cli/__init__.py
+
+./ec2ssh/cli
+./ec2ssh/cli/
+./ec2ssh/cli/sudo_access.py
+./ec2ssh/cli/__init__.py
+./ec2ssh/ssm.py
+./ec2ssh/__init__.py
+
+
+./samples/test_ssm.py
+./samples/test_s3.py
+./samples/test_ec2.py
+./samples/ssm.py
+
+./cfn
+./cfn/cfn-resources
+./cfn/cfn-resources/initializer.yaml
+
+
+Installation
+------------
+
+git clone https://github.com/ucop-tds/24hour-ssh.git
+
+# assume python venv
+pip install -e 24hour-ssh
+
+# as ec2-user but not python venv
+pip install --user -e 24hour-ssh
+
+
+import ec2ssh
+
