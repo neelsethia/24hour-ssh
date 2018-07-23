@@ -3,7 +3,7 @@ import moto
 from moto import mock_ec2, mock_ssm
 import test_ec2
 
-from ec2ssh.sample import ssm
+from ec2ssh.samples import ssm
 
 
 param_name = 'passwd'

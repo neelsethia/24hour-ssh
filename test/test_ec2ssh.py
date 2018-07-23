@@ -7,8 +7,10 @@ import json
 #import pytest
 import moto 
 from moto import mock_ec2, mock_ssm
+import hashlib
 
 from ec2ssh import ssm
+
 
 def get_fixture_file(fixture_file):
     """Returns  path to named fixture file."""
@@ -25,10 +27,11 @@ def test_read_public_key():
     assert isinstance(response, str)
     #assert False
 
-def test_build_send_command_document():
+
+def test_build_document():
     pubkey_file = get_fixture_file('id_rsa.pub')
     pubkey = ssm.read_public_key_from_file(pubkey_file)
-    response = ssm.build_send_command_document(pubkey)
+    response = ssm.build_document(pubkey)
     #print(response)
     assert isinstance(response, str)
     d = json.loads(response)
@@ -37,16 +40,64 @@ def test_build_send_command_document():
     #assert False
 
 
-
-param_name = 'secret'
-param_value = 'that crazy little thing you do'
 @mock_ssm
-def test_set_encrypted_param():
-    response = ssm.set_encrypted_param(param_name, param_value)
-    assert isinstance(response['Version'], int)
-    response = ssm.get_encrypted_param(param_name)
-    assert response['Parameter']['Value'] == param_value
+def test_upload_document():
+    pubkey_file = get_fixture_file('id_rsa.pub')
+    pubkey = ssm.read_public_key_from_file(pubkey_file)
+    document = ssm.build_document(pubkey)
+    document_name = 'sshPubkeySetup'
+    client = ssm.get_ssm_client()
+    ssm.upload_document(client, document_name,  document)
+    response = client.describe_document(Name=document_name)
+    print(response)
+    sha256_hash = response['Document']['Hash']
+    assert sha256_hash == hashlib.sha256(document.encode()).hexdigest()
+    #assert False
 
 
+AMI_IMAGE = 'ami-4e700e36'  #this is for US-WEST-2 ebs-ssd
 
+
+@mock_ec2
+def test_is_24hourssh_enabled():
+    ec2 = boto3.resource('ec2',region_name='us-west-2' )
+    test_instances = ec2.create_instances(ImageId=AMI_IMAGE, MinCount=2, MaxCount=2)
+    test_instances[0].create_tags(Tags=[{ 'Key': '24hourssh', 'Value': 'enabled' }])
+    assert ssm.is_24hourssh_enabled(test_instances[0])
+    assert not ssm.is_24hourssh_enabled(test_instances[1])
+    #assert False
+
+
+@mock_ec2
+def test_get_24hourssh_enabled_instances():
+    ec2 = boto3.resource('ec2',region_name='us-west-2' )
+    test_instances = ec2.create_instances(ImageId=AMI_IMAGE, MinCount=2, MaxCount=2)
+    test_instances[0].create_tags(Tags=[{ 'Key': '24hourssh', 'Value': 'enabled' }])
+    enabled = ssm.get_24hourssh_enabled_instances()
+    print(enabled)
+    assert enabled[0] == test_instances[0]
+    #assert False
+
+
+@mock_ec2
+@mock_ssm
+def test_send_command():
+    ec2 = boto3.resource('ec2',region_name='us-west-2' )
+    test_instances = ec2.create_instances(ImageId=AMI_IMAGE, MinCount=2, MaxCount=2)
+    test_instances[0].create_tags(Tags=[{ 'Key': '24hourssh', 'Value': 'enabled' }])
+    enabled = ssm.get_24hourssh_enabled_instances()
+
+    document_name = 'sshPubkeySetup'
+    pubkey_file = get_fixture_file('id_rsa.pub')
+    pubkey = ssm.read_public_key_from_file(pubkey_file)
+    document = ssm.build_document(pubkey)
+    client = ssm.get_ssm_client()
+    ssm.upload_document(client, document_name, document)
+
+    response = ssm.send_command(client, enabled[0].id)
+    print(response)
+    assert response['Command']['DocumentName'] == document_name
+    assert response['Command']['Status'] == 'Success'
+    assert response['Command']['InstanceIds'][0] == enabled[0].id 
+    #assert False
 

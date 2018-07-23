@@ -12,21 +12,22 @@ from moto import mock_ec2
 ec2 = boto3.resource('ec2', 'us-west-2', aws_access_key_id="", aws_secret_access_key="")
 
 def make_instance():
+    ec2= boto3.resource('ec2',region_name='us-west-2' )
     instance = ec2.create_instances(
         ImageId='ami-4e700e36', #this is for US-WEST-2 ebs-ssd
         MinCount=1,
         MaxCount=1,
         InstanceType='t1.micro' #t1.micro only works with EBS-SSD 
         )
-    global tempID
-    tempID = instance[0].id 
     return instance[0].id
 
 def list_instances():
+    ec2 = boto3.resource('ec2',region_name='us-west-2' )
     for instance in ec2.instances.all():
         print (instance.id, instance.state) 
         
 def terminate_instances(termID):
+    ec2 = boto3.resource('ec2',region_name='us-west-2' )
     instanceTerm = ec2.Instance(termID)
     response = instanceTerm.terminate() 
     #print (response)
