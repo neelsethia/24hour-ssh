@@ -1,9 +1,8 @@
-import sys 
+import sys
 import os
 
 #from main.sudo_access import generate_key_crypto
-from main.sudo_access import generate_key_paramiko
-
+from ec2ssh.cli.sudo_access import generate_key_paramiko
 
 # def test_generated_crypto_key():
     
