@@ -7,24 +7,39 @@
 
 import subprocess
 import sys 
+import os.path 
+sys.path.append(os.path.abspath(os.path.join('../..','ec2ssh')))
+from ssm import get_24hourssh_enabled_instances
 import string 
-import os 
 import boto3
 import botocore
 from botocore.exceptions import ClientError
-import moto 
 import datetime
 from os import chmod 
-from Crypto.PublicKey import RSA 
+import moto
 import paramiko
 
 
-def target_prompt():
+
+def target_prompt_selector():
+    ec2 = boto3.resource('ec2')
+    
+    #function call to SSM (for now until modularize) to list instances with key, tag
+    print(get_24hourssh_enabled_instances())
+    
+    
+    
+    #user enters desired target host
     global targetHost
     targetHost = input("What is the desired target host?")
     
+    
 
-    ec2 = boto3.resource('ec2')
+    
+    
+def transfer_key(): 
+    #use SSM to transfer public key to target instance
+    print("transfer_key function filler")
 
 #generating an SSH keypair
 def generate_key_paramiko(filename, passwd):
@@ -36,26 +51,7 @@ def generate_key_paramiko(filename, passwd):
     cwd = os.getcwd()
     out = open(cwd +'/pkey.pub', 'w').write(key.get_base64())
 
-#works but not what we need :(
-# def generate_key_crypto(): 
-#     key = RSA.generate(2048)
-#     cwd = os.getcwd()
-#     with open(cwd + "/private.key", 'wb') as content_file: 
-#         chmod(cwd + "/private.key", 600)
-#         content_file.write(key.exportKey('PEM'))
-#     pubkey = key.publickey()
-#     with open(cwd + "/public.key", 'w') as content_file:
-#         content_file.write(pubkey.exportKey('OpenSSH'))
+
     
-
-
-#def transfer_key(): 
-    #use SSM to transfer public key to target instance 
-if __name__== "__main__":
-    import sys
+if __name__ == "__main__":
     
-    
-
-
-
-
