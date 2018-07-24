@@ -16,7 +16,8 @@ with open(os.path.join(here, 'ec2ssh/__init__.py')) as f:
 
 setup(
     name='24hour-ssh',
-    version=about['__version__'],
+    #version=about['__version__'],
+    version='0.0.0',
     description='Safely provide temporary ssh access to AWS EC2 instances',
     long_description=long_description,
     url='https://github.com/ucop-tds/24hour-ssh',
@@ -47,7 +48,7 @@ setup(
     packages=find_packages(
         '.',
         exclude=[
-            'test',
+            'tests',
             'cfn',
         ],
     ),
