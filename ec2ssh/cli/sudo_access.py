@@ -51,6 +51,8 @@ def generate_key_paramiko(filename, passwd):
 
 #def transfer_key(): 
     #use SSM to transfer public key to target instance 
+if __name__== "__main__":
+    import sys
     
     
 
