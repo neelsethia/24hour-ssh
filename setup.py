@@ -40,11 +40,6 @@ setup(
         'awscli',
         'PyYAML',
     ],
-    test_requires=[
-        'moto',
-        'pytest',
-        'flake8',
-    ],
     packages=find_packages(
         '.',
         exclude=[
