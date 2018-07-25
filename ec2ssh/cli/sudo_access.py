@@ -10,6 +10,7 @@ import sys
 import os.path 
 sys.path.append(os.path.abspath(os.path.join('../..','ec2ssh')))
 from ssm import get_24hourssh_enabled_instances
+#tryy to import ec2ssh.ssm 
 import string 
 import boto3
 import botocore
