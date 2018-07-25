@@ -10,7 +10,8 @@ import sys
 import os.path 
 sys.path.append(os.path.abspath(os.path.join('../..','ec2ssh')))
 from ssm import get_24hourssh_enabled_instances
-#tryy to import ec2ssh.ssm 
+#try to import ec2ssh.ssm 
+#import ec2ssh.ssm 
 import string 
 import boto3
 import botocore
@@ -32,7 +33,9 @@ def target_prompt_selector():
     
     #user enters desired target host
     global targetHost
-    targetHost = input("What is the desired target host?")
+    targetHost = input("What is the desired target host? (Enter the Instance ID):\n")
+    targetHost = str.strip(targetHost)
+    print(targetHost)
     
     
 
@@ -55,4 +58,4 @@ def generate_key_paramiko(filename, passwd):
 
     
 if __name__ == "__main__":
-    
+    target_prompt_selector()
