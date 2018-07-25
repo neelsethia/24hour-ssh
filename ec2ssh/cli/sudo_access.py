@@ -4,14 +4,11 @@
 #Script will generate temporary ssh keypair. 
 #Script will call ssm service to install generated ssh public key into described file. 
 #Script will delete temporary ssh keypair from cloud9 instance after 24 hours.  
-
+import os
 import subprocess
 import sys 
-import os.path 
-sys.path.append(os.path.abspath(os.path.join('../..','ec2ssh')))
-from ssm import get_24hourssh_enabled_instances
-#try to import ec2ssh.ssm 
-#import ec2ssh.ssm 
+import ec2ssh.ssm
+from ec2ssh.ssm import get_24hourssh_enabled_instances
 import string 
 import boto3
 import botocore
@@ -27,6 +24,7 @@ def target_prompt_selector():
     ec2 = boto3.resource('ec2')
     
     #function call to SSM (for now until modularize) to list instances with key, tag
+        #lists all instances with the key and tag for 24hourssh and enabled 
     print(get_24hourssh_enabled_instances())
     
     
@@ -35,10 +33,6 @@ def target_prompt_selector():
     global targetHost
     targetHost = input("What is the desired target host? (Enter the Instance ID):\n")
     targetHost = str.strip(targetHost)
-    print(targetHost)
-    
-    
-
     
     
 def transfer_key(): 
