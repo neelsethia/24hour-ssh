@@ -22,7 +22,7 @@ def build_document(pubkey):
                 action='aws:runShellScript',
                 name='sshPubkeySetup',
                 inputs=dict(
-                    runCommandand=[
+                    runCommand=[
                         'SSH_PUBKEY="{}"'.format(pubkey),
                         'echo $SSH_PUBKEY >> ~ec2-user/.ssh/authorized_keys',
                     ]
@@ -31,7 +31,6 @@ def build_document(pubkey):
         ]
     )
     return json.dumps(document)
-
 
 def upload_document(client, document_name, document):
     try:
@@ -46,7 +45,6 @@ def upload_document(client, document_name, document):
         pass
     return
 
-
 def send_command(client, instance_id):
     response = client.send_command(
         InstanceIds=[instance_id],
@@ -56,7 +54,6 @@ def send_command(client, instance_id):
     )
     return response
 
-
 def is_24hourssh_enabled(instance):
     is_enabled = next((
             True for tag in instance.tags
@@ -64,7 +61,6 @@ def is_24hourssh_enabled(instance):
             and tag['Value'] == 'enabled'
         ), False)
     return is_enabled
-
 
 def get_24hourssh_enabled_instances():
     ec2 = boto3.resource('ec2', region_name='us-west-2')
@@ -74,7 +70,6 @@ def get_24hourssh_enabled_instances():
         and is_24hourssh_enabled(instance)
     ]
 
-
 def compare_24hourssh_enabled_instance_ID(instanceID):
     ec2=boto3.resource('ec2',region_name='us-west-2')
     for instance in ec2.instances.all():
@@ -82,7 +77,8 @@ def compare_24hourssh_enabled_instance_ID(instanceID):
         and instance.state['Name'] == 'running' 
         and is_24hourssh_enabled(instance)):
                 return True
-    return False    
+    return False
+    
 def test_output():
     ec2=boto3.resource('ec2',region_name='us-west-2')
     for instance in ec2.instances.all():
