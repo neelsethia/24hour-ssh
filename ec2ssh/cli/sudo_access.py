@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys 
 from ec2ssh import ssm 
+from ec2ssh import prompter
 import string 
 import boto3
 import botocore
@@ -26,7 +27,7 @@ def target_prompt_selector():
         #lists all instances with the key and tag for 24hourssh and enabled 
     #print(get_24hourssh_enabled_instances())
     print("======================")
-    ssm.test_output()
+    prompter.test_output()
     print("======================\n")
     
     #user enters desired target host
@@ -34,7 +35,7 @@ def target_prompt_selector():
         targetHost = input("What is the desired target host? (Enter the Instance ID): ")
         targetHost = str.strip(targetHost)
         #check that entered ID matches with the ID's given in get_24hourssh_enabled_instances 
-        if not ssm.compare_24hourssh_enabled_instance_ID(targetHost):
+        if not prompter.compare_24hourssh_enabled_instance_ID(targetHost):
             print("The instance ID you have entered is invalid!")
             continue
         else:
