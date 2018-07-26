@@ -8,9 +8,6 @@ import os
 import subprocess
 import sys 
 from ec2ssh import ssm 
-#from ec2ssh.ssm import get_24hourssh_enabled_instances  
-#from ec2ssh.ssm import compare_24hourssh_enabled_instance_ID
-#from ec2ssh.ssm import test_output
 import string 
 import boto3
 import botocore
