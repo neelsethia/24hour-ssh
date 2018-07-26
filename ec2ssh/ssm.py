@@ -75,6 +75,20 @@ def get_24hourssh_enabled_instances():
     ]
 
 
+def compare_24hourssh_enabled_instance_ID(instanceID):
+    ec2=boto3.resource('ec2',region_name='us-west-2')
+    for instance in ec2.instances.all():
+        if (instance.id == instanceID 
+        and instance.state['Name'] == 'running' 
+        and is_24hourssh_enabled(instance)):
+                return True
+    return False    
+def test_output():
+    ec2=boto3.resource('ec2',region_name='us-west-2')
+    for instance in ec2.instances.all():
+        if is_24hourssh_enabled(instance):
+            print(instance.id) 
+
 def main():
     client = boto3.client('ssm', 'us-west-2')
     pubkey_file = '~/.ssh/id_rsa.pub'
@@ -84,6 +98,8 @@ def main():
     upload_document(client, document_name, document)
     for instance in get_24hourssh_enabled_instances():
         print(instance.id)
+
+    
 
 
 if __name__ == '__main__':
