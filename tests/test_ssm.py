@@ -52,9 +52,10 @@ def test_upload_document():
     print(response)
     sha256_hash = response['Document']['Hash']
     assert sha256_hash == hashlib.sha256(document.encode()).hexdigest()
+    
     #assert False
 
-
+                                
 AMI_IMAGE = 'ami-4e700e36'  #this is for US-WEST-2 ebs-ssd
 
 
