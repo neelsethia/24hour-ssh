@@ -7,5 +7,6 @@ install:
     - pip install boto3
     - pip install https://github.com/ashleygould/moto/archive/ashley.zip
     - pip install awscli
+    - pip install paramiko
 script:
     - pytest   
