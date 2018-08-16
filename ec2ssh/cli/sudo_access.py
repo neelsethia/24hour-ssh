@@ -28,6 +28,7 @@ def target_prompt_selector():
     #print(get_24hourssh_enabled_instances())
     print("======================")
     prompter.test_output()
+    #print(prompter.get_24hourssh_enabled_instances())
     print("======================\n")
     
     #user enters desired target host
