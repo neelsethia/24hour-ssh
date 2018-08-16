@@ -24,7 +24,7 @@ def test_read_public_key():
     assert os.path.exists(pubkey_file)
     response = ssm.read_public_key_from_file(pubkey_file)
     #print(response)
-    assert isinstance(response, str)
+    assert  (response, str)
     #assert False
 
 
