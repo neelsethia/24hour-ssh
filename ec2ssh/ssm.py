@@ -9,7 +9,7 @@ def read_public_key_from_file(pubkey_file):
 
 
 def get_ssm_client():
-    return boto3.client('ssm', 'us-west-2', aws_access_key_id="", aws_secret_access_key="")
+    return boto3.client('ssm', 'us-west-2') #, aws_access_key_id="", aws_secret_access_key="")
 
 
 def build_document(pubkey):
@@ -64,7 +64,7 @@ def main():
     upload_document(client, document_name, document)
     # for instance in get_24hourssh_enabled_instances():
     #     print(instance.id)
-
+    
     
 
 

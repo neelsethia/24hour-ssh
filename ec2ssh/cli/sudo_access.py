@@ -40,12 +40,27 @@ def target_prompt_selector():
             continue
         else:
             break
-    transfer_key(targetHost)
+    return targetHost
         
     
 def transfer_key(target): 
     #use SSM to transfer public key to target instance
-    print("transfer_key function filler")
+    pub_key = ssm.read_public_key_from_file("pkey.pub")
+    print(pub_key)
+    client = ssm.get_ssm_client()
+    document = ssm.build_document(pub_key)
+    
+    #configure ssm on target instance
+        #perhaps need to modify the instance through some CF mods 
+    
+    
+    #call ssm send command from here to designated instance 
+    ssm.upload_document(client, "sshPubkeySetup", document)
+    ssm.send_command(client, target)
+    
+    
+    
+    
 
 #generating an SSH keypair
 def generate_key_paramiko(filename, passwd):
@@ -58,6 +73,9 @@ def generate_key_paramiko(filename, passwd):
     out = open(cwd +'/pkey.pub', 'w').write(key.get_base64())
 
 
+
     
 if __name__ == "__main__":
-    target_prompt_selector()
+    #generate_key_paramiko("private.key", "hello")
+    targetHost = target_prompt_selector()
+    #transfer_key(targetHost)
