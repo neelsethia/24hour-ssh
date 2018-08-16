@@ -1,6 +1,7 @@
 import os 
 import boto3 
 
+
 def is_24hourssh_enabled(instance):
     is_enabled = next((
             True for tag in instance.tags
