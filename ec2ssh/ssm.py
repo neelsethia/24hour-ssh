@@ -14,7 +14,7 @@ def get_ssm_client():
 
 def build_document(pubkey):
     document = dict(
-        schemaVersion='2.2',
+        #schemaVersion='2.2',
         description='Install ssh public key into ~ec2-user/.ssh/authorized_keys',
         parameters=dict(),
         mainSteps=[
